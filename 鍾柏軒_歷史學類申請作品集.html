@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>钟柏轩 | 历史学类申请作品集</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' fill='%23c8a850' text-anchor='middle'%3E%E9%90%98%3C/text%3E%3C/svg%3E">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-card: rgba(18, 18, 28, 0.75);
+      --gold: #c8a850;
+      --gold-light: #dbbf70;
+      --gold-pale: #e8d9a0;
+      --text-primary: #e9edf3;
+      --text-secondary: #b0b8c4;
+      --text-muted: #7a8494;
+      --border-subtle: rgba(200, 168, 80, 0.18);
+      --border-gold: rgba(200, 168, 80, 0.35);
+      --radius-sm: 10px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --shadow-card: 0 8px 40px rgba(0, 0, 0, 0.35);
+      --shadow-gold: 0 0 50px rgba(200, 168, 80, 0.18);
+      --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.45);
+      --transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      --transition-fast: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      --font-display: 'Playfair Display', 'Noto Serif TC', serif;
+      --font-body: 'Inter', 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', sans-serif;
+      --nav-bg: rgba(18, 18, 28, 0.65);
+      --nav-blur: 16px;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8f7f4;
+      --bg-secondary: #ecebe6;
+      --bg-card: rgba(255, 255, 255, 0.78);
+      --text-primary: #1a202c;
+      --text-secondary: #4a5568;
+      --text-muted: #88909c;
+      --border-subtle: rgba(0, 0, 0, 0.1);
+      --border-gold: rgba(180, 140, 40, 0.3);
+      --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+      --shadow-gold: 0 0 40px rgba(180, 140, 40, 0.12);
+      --shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.1);
+      --nav-bg: rgba(255, 255, 255, 0.55);
+      --nav-blur: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.85;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.6s ease, color 0.6s ease;
+    }
+
+    #cursor-glow {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200, 168, 80, 0.16) 0%, rgba(200, 168, 80, 0.04) 35%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      mix-blend-mode: screen;
+      will-change: left, top;
+    }
+
+    [data-theme="light"] #cursor-glow {
+      mix-blend-mode: multiply;
+      background: radial-gradient(circle, rgba(160, 130, 60, 0.18) 0%, rgba(160, 130, 60, 0.04) 35%, transparent 70%);
+    }
+
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+      font-family: var(--font-display);
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-text {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: 5px;
+      background: linear-gradient(135deg, #ffffff, var(--gold-light), #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 2s ease-in-out infinite;
+      background-size: 200% auto;
+    }
+
+    .loader-sub {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      letter-spacing: 7px;
+      color: var(--gold);
+      margin-top: 16px;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+
+    .loader-bar-wrap {
+      width: 200px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      margin-top: 36px;
+      overflow: hidden;
+    }
+
+    .loader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+      border-radius: 999px;
+      animation: loadBar 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      width: 0;
+    }
+
+    @keyframes loadBar {
+      0% {
+        width: 0;
+      }
+
+      55% {
+        width: 72%;
+      }
+
+      100% {
+        width: 100%;
+      }
+    }
+
+    @keyframes shimmer {
+
+      0%,
+      100% {
+        background-position: 0% center;
+      }
+
+      50% {
+        background-position: 200% center;
+      }
+    }
+
+    #three-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .global-nav {
+      position: fixed;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      padding: 8px 14px;
+      border-radius: 999px;
+      backdrop-filter: blur(var(--nav-blur));
+      -webkit-backdrop-filter: blur(var(--nav-blur));
+      background: var(--nav-bg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      flex-wrap: nowrap;
+      justify-content: center;
+      white-space: nowrap;
+      max-width: 95vw;
+    }
+
+    .global-nav.scrolled {
+      padding: 6px 12px;
+      top: 12px;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      background: rgba(18, 18, 28, 0.85);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="light"] .global-nav.scrolled {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    .global-nav a {
+      display: inline-block;
+      padding: 7px 13px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border-radius: 999px;
+      transition: var(--transition-fast);
+      cursor: pointer;
+      color: var(--text-secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .global-nav a.active {
+      color: var(--gold-light);
+      background: rgba(200, 168, 80, 0.14);
+      font-weight: 600;
+    }
+
+    .global-nav a:hover {
+      background: rgba(200, 168, 80, 0.12);
+      color: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .theme-toggle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(200, 168, 80, 0.12);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+      margin-left: 4px;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(200, 168, 80, 0.28);
+      transform: rotate(30deg);
+      border-color: var(--border-gold);
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 998;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      backdrop-filter: blur(14px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--gold-light);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: var(--shadow-card);
+      pointer-events: none;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .back-to-top:hover {
+      background: var(--gold);
+      color: #0a0a0f;
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .view-container {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+    }
+
+    #hero-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      padding: 60px 32px 20px;
+      position: relative;
+    }
+
+    #hero-section::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200, 168, 80, 0.06) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: heroGlow 6s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+
+    @keyframes heroGlow {
+      0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 1;
+      }
+    }
+
+    #hero-section .hero-badge,
+    #hero-section h1,
+    #hero-section .hero-logos,
+    #hero-section .hero-school,
+    #hero-section .hero-subtitle,
+    #hero-section .hero-cta,
+    #hero-section .stats-grid,
+    #hero-section .scroll-indicator {
+      opacity: 0;
+      animation: fadeUp 0.8s forwards;
+    }
+
+    #hero-section .hero-badge {
+      animation-delay: 0.15s;
+    }
+
+    #hero-section h1 {
+      animation-delay: 0.3s;
+    }
+
+    #hero-section .hero-logos {
+      animation-delay: 0.45s;
+    }
+
+    #hero-section .hero-school {
+      animation-delay: 0.55s;
+    }
+
+    #hero-section .hero-subtitle {
+      animation-delay: 0.65s;
+    }
+
+    #hero-section .hero-cta {
+      animation-delay: 0.75s;
+    }
+
+    #hero-section .stats-grid {
+      animation-delay: 0.9s;
+    }
+
+    #hero-section .scroll-indicator {
+      animation-delay: 1.05s;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      letter-spacing: 4px;
+      color: var(--gold-light);
+      border: 1px solid var(--border-gold);
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      background: rgba(200, 168, 80, 0.06);
+    }
+
+    #hero-section h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 7.5vw, 6rem);
+      font-weight: 900;
+      letter-spacing: 3px;
+      line-height: 1.05;
+      margin-bottom: 10px;
+      background: linear-gradient(180deg, #ffffff 0%, #d0d4dc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-name-zh {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: 8px;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+    }
+
+    .hero-school {
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .hero-school small {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      letter-spacing: 1.5px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      font-weight: 400;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 15px 40px;
+      border: 2px solid var(--gold);
+      color: var(--gold-light);
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      font-size: 0.88rem;
+      transition: var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      border-radius: 999px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: -1;
+    }
+
+    .hero-cta:hover {
+      color: #0a0a0f;
+      border-color: var(--gold);
+      box-shadow: var(--shadow-gold);
+      transform: translateY(-4px);
+    }
+
+    .hero-cta:hover::after {
+      transform: scaleX(1);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .scroll-indicator span {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      color: var(--text-muted);
+    }
+
+    .scroll-indicator .scroll-line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+
+      0%,
+      100% {
+        opacity: 0.3;
+        transform: scaleY(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleY(1.4);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin: 50px 0 30px;
+      max-width: 950px;
+      width: 100%;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 30px 18px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(12px);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(200, 168, 80, 0.06) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-gold);
+      border-color: var(--border-gold);
+    }
+
+    .stat-card:hover::after {
+      opacity: 1;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-on-scroll.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-on-scroll.delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-on-scroll.delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-on-scroll.delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-on-scroll.delay-4 {
+      transition-delay: 0.4s;
+    }
+
+    #home-about {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    #content-wrapper {
+      display: none;
+      padding: 100px 32px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    #content-wrapper.active {
+      display: block;
+    }
+
+    .content-section {
+      display: none;
+      animation: fadeInContent 0.6s ease;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeInContent {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      letter-spacing: 1px;
+      position: relative;
+      display: inline-block;
+      color: var(--text-primary);
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 55px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      border-radius: 999px;
+    }
+
+    .section-subtitle-en {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .glass-card {
+      padding: 38px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+      margin-bottom: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-elevated);
+      border-color: var(--border-gold);
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+      transition: left 0.9s ease;
+      z-index: 1;
+    }
+
+    .glass-card:hover::before {
+      left: 100%;
+    }
+
+    .bio-layout {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 44px;
+      align-items: start;
+    }
+
+    .profile-card {
+      position: sticky;
+      top: 130px;
+      padding: 34px 28px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(16px);
+      text-align: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow-card);
+      animation: cardFloat 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes cardFloat {
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .profile-card:hover {
+      box-shadow: var(--shadow-gold);
+      border-color: var(--border-gold);
+    }
+
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 32px rgba(200, 168, 80, 0.22);
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+
+    .profile-avatar:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 48px rgba(200, 168, 80, 0.4);
+    }
+
+    .profile-name-zh-card {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--gold-light);
+    }
+
+    .profile-name-en-card {
+      font-size: 0.85rem;
+      opacity: 0.65;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+
+    .profile-divider-card {
+      width: 45px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 18px;
+    }
+
+    .profile-school-badge {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(200, 168, 80, 0.1);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.82rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .profile-school-badge small {
+      display: block;
+      font-size: 0.7rem;
+      opacity: 0.55;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+
+    .timeline {
+      padding-left: 44px;
+      border-left: 2px solid var(--border-subtle);
+      position: relative;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 30px;
+      padding: 20px 22px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      cursor: default;
+      opacity: 0;
+      transform: translateX(-30px);
+      display: flex;
+      gap: 22px;
+      align-items: flex-start;
+      background: transparent;
+    }
+
+    .timeline-item.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .timeline-item:hover {
+      background: rgba(200, 168, 80, 0.04);
+      border-radius: var(--radius-sm);
+    }
+
+    .timeline-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--gold);
+      position: absolute;
+      left: -51px;
+      top: 24px;
+      box-shadow: 0 0 14px rgba(200, 168, 80, 0.5);
+      transition: var(--transition-fast);
+      z-index: 2;
+    }
+
+    .timeline-item:hover .timeline-dot {
+      transform: scale(1.5);
+      box-shadow: 0 0 22px rgba(200, 168, 80, 0.7);
+    }
+
+    .timeline-thumb {
+      width: 95px;
+      height: 64px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+      transition: var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .timeline-thumb:hover {
+      transform: scale(1.06);
+      box-shadow: var(--shadow-gold);
+      border-color: var(--border-gold);
+    }
+
+    .timeline-thumb-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .timeline-thumb-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      font-size: 0.6rem;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      padding: 2px 5px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      color: #fff;
+    }
+
+    .timeline-thumb-wrapper:hover::after {
+      opacity: 1;
+    }
+
+    .date-tag {
+      display: inline-block;
+      font-size: 0.76rem;
+      padding: 5px 15px;
+      background: rgba(200, 168, 80, 0.1);
+      color: var(--gold-light);
+      border-radius: 999px;
+      margin-bottom: 10px;
+      letter-spacing: 0.6px;
+      font-weight: 500;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 26px;
+    }
+
+    .skill-card {
+      padding: 30px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(12px);
+      transition: var(--transition);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-gold);
+      border-color: var(--border-gold);
+    }
+
+    .skill-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+    }
+
+    .skill-item {
+      margin-bottom: 16px;
+    }
+
+    .skill-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 7px;
+      letter-spacing: 0.3px;
+    }
+
+    .skill-row span:last-child {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .skill-bar-bg {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #5b9bd5, var(--gold-light));
+      border-radius: 999px;
+      width: 0;
+      transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+    }
+
+    .skill-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    .award-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .award-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 26px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .award-item:hover {
+      transform: translateX(10px);
+      border-color: var(--gold);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .award-thumb {
+      width: 68px;
+      height: 92px;
+      border-radius: 6px;
+      object-fit: cover;
+      object-position: top center;
+      border: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+      transition: var(--transition-fast);
+    }
+
+    .award-item:hover .award-thumb {
+      transform: scale(1.04);
+      box-shadow: 0 0 16px rgba(200, 168, 80, 0.25);
+    }
+
+    .award-info h4 {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+
+    .award-info .award-rank {
+      font-size: 0.82rem;
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .award-info .award-date {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .photo-grid {
+      display: flex;
+      gap: 14px;
+      margin-top: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px;
+    }
+
+    .photo-grid::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .photo-grid::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .photo-grid::-webkit-scrollbar-thumb {
+      background: var(--border-gold);
+      border-radius: 999px;
+    }
+
+    .photo-item {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      aspect-ratio: 1.5;
+      flex: 0 0 auto;
+      width: 200px;
+      transition: var(--transition);
+      border: 2px solid rgba(200, 168, 80, 0.25);
+      cursor: pointer;
+      position: relative;
+      scroll-snap-align: start;
+      box-shadow: 3px 3px 0px rgba(200, 168, 80, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease, filter 0.4s;
+      filter: brightness(0.95) contrast(1.05);
+    }
+
+    .photo-item:hover {
+      transform: scale(1.04);
+      box-shadow: var(--shadow-gold);
+      border-color: var(--border-gold);
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(1.05) contrast(1.1);
+    }
+
+    .photo-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.3) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .photo-item:hover::after {
+      opacity: 1;
+    }
+
+    .photo-grid.auto-scroll {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-grid.auto-scroll .photo-track {
+      display: flex;
+      gap: 14px;
+      animation: scrollPhotos 25s linear infinite;
+      width: max-content;
+    }
+
+    .photo-grid.auto-scroll .photo-track:hover {
+      animation-play-state: paused;
+    }
+
+    .photo-grid.auto-scroll .photo-item {
+      flex: 0 0 auto;
+      width: 200px;
+    }
+
+    @keyframes scrollPhotos {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(calc(-50% - 7px));
+      }
+    }
+
+    .data-highlight-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin: 24px 0;
+      scroll-snap-type: x mandatory;
+    }
+
+    .data-highlight-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .data-highlight-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .data-highlight-scroll::-webkit-scrollbar-thumb {
+      background: var(--border-gold);
+      border-radius: 999px;
+    }
+
+    .data-highlight-scroll .data-highlight-card {
+      flex: 0 0 auto;
+      width: 200px;
+      scroll-snap-align: start;
+    }
+
+    .data-highlight-card {
+      padding: 22px 20px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      text-align: center;
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+    }
+
+    .data-highlight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-gold);
+      border-color: var(--border-gold);
+    }
+
+    .data-highlight-card .dh-number {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .data-highlight-card .dh-label {
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.4s ease;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+
+    .lightbox-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-overlay img {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
+      transform: scale(0.92);
+      transition: 0.4s ease;
+      border: 1px solid rgba(200, 168, 80, 0.3);
+    }
+
+    .lightbox-overlay.active img {
+      transform: scale(1);
+    }
+
+    .lightbox-close-hint {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    .exchange-reflection {
+      margin-top: 24px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .exchange-reflection h4 {
+      color: var(--gold-light);
+      font-size: 1rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .exchange-reflection p {
+      font-size: 0.92rem;
+      opacity: 0.85;
+      line-height: 1.9;
+    }
+
+    .research-link-btn {
+      display: inline-block;
+      padding: 10px 22px;
+      margin-top: 16px;
+      border-radius: 999px;
+      background: rgba(200, 168, 80, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      font-weight: 500;
+      letter-spacing: 1px;
+      font-size: 0.82rem;
+      transition: var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .research-link-btn:hover {
+      background: var(--gold);
+      color: #0a0a0f;
+      border-color: var(--gold);
+      box-shadow: var(--shadow-gold);
+      transform: translateY(-2px);
+    }
+
+    .video-preview {
+      width: 100%;
+      max-width: 400px;
+      border-radius: var(--radius-sm);
+      margin: 14px 0;
+      border: 1px solid var(--border-subtle);
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .video-preview:hover {
+      box-shadow: var(--shadow-gold);
+      border-color: var(--border-gold);
+      transform: scale(1.02);
+    }
+
+    footer {
+      text-align: center;
+      padding: 44px;
+      font-size: 0.78rem;
+      opacity: 0.5;
+      letter-spacing: 2.5px;
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 40px;
+    }
+
+    @media (max-width: 960px) {
+      .bio-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-card {
+        position: static;
+        animation: none;
+        max-width: 400px;
+        margin: 0 auto 32px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .global-nav {
+        gap: 0px;
+        padding: 6px 8px;
+      }
+
+      .global-nav a {
+        padding: 6px 9px;
+        font-size: 0.65rem;
+        letter-spacing: 0.5px;
+      }
+
+      #hero-section h1 {
+        font-size: 2.6rem;
+      }
+
+      .hero-name-zh {
+        font-size: 1.4rem;
+        letter-spacing: 4px;
+      }
+
+      .timeline-item {
+        flex-direction: column;
+      }
+
+      .timeline-thumb {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2;
+      }
+
+      .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .photo-item {
+        width: 160px;
+      }
+
+      .photo-grid.auto-scroll .photo-item {
+        width: 160px;
+      }
+
+      .video-preview {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loading-screen">
+    <div class="loader-text">钟柏轩</div>
+    <div class="loader-sub">Historical Studies Portfolio 2026</div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar-fill"></div>
+    </div>
+  </div>
+  <div id="cursor-glow"></div>
+  <div id="three-bg"></div>
+
+  <nav class="global-nav" id="global-nav">
+    <a href="#" data-view="home" class="active">首页 Home</a>
+    <a href="#" data-view="journey">历程 Journey</a>
+    <a href="#" data-view="skills">能力 Skills</a>
+    <a href="#" data-view="research">研究 Research</a>
+    <a href="#" data-view="awards">奖项 Awards</a>
+    <a href="#" data-view="exchange">交流 Exchange</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">☾</button>
+  </nav>
+
+  <button class="back-to-top" id="back-to-top" aria-label="返回顶部">↑</button>
+
+  <div class="view-container">
+    <div id="hero-section">
+      <h1>钟柏轩</h1>
+      <div class="hero-school">圣若瑟教区中学第五校（英文部）<br><small>St. Joseph's Diocesan College No.5 (English Section) · 申请北京师范大学 历史学类（历史学 / 考古学）</small></div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" data-target="5">0</div>
+          <div class="stat-label">历史科全级排名前五 Top 5</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="8">0</div>
+          <div class="stat-label">考察景点 Heritage Sites</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="4">0</div>
+          <div class="stat-label">文化交流团 Exchange Tours</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-target="4">0</div>
+          <div class="stat-label">语言能力 Languages</div>
+        </div>
+      </div>
+      <a href="#" class="hero-cta" id="explore-btn">探索作品集 Explore</a>
+      <div class="scroll-indicator" id="scroll-down-btn" title="向下探索">
+        <span>向下探索 Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </div>
+
+    <div id="home-about">
+      <div class="bio-layout">
+        <aside class="profile-card reveal-on-scroll">
+          <img src="https://i.postimg.cc/dQ5kfhGN/d9e3427eef0dad60c7a3ac2a860556ea.jpg" alt="钟柏轩" class="profile-avatar">
+          <h3 class="profile-name-zh-card">钟柏轩</h3>
+          <div class="profile-divider-card"></div>
+          <div class="profile-school-badge"><img src="assets/school-logo.png" alt="圣若瑟教区中学第五校" style="height:34px;width:auto;object-fit:contain;background:#fff;border-radius:8px;padding:3px;vertical-align:middle;margin-right:8px;">圣若瑟教区中学第五校（英文部）<small>St. Joseph's Diocesan College No.5 (English Section)</small></div>
+          <p style="font-size:0.85rem;margin-top:8px;"><strong>中六理科组</strong> · Form 6 Science Stream</p>
+          <p style="font-size:0.82rem;margin-top:8px;"><img src="assets/bnu-logo.png" alt="北京师范大学" style="height:24px;width:auto;object-fit:contain;background:#fff;border-radius:6px;padding:2px;vertical-align:middle;margin-right:6px;">申请：北京师范大学 历史学类</p>
+          <p style="margin-top:10px;font-size:0.82rem;opacity:0.7;">oscarchong1205@gmail.com</p>
+        </aside>
+        <div>
+          <div class="glass-card reveal-on-scroll delay-1">
+            <span class="section-subtitle-en">About Me</span>
+            <h2 class="section-title" style="font-size:1.7rem;margin-top:0;">自我介绍</h2>
+            <p>我是来自<strong>圣若瑟教区中学第五校英文部</strong>的中六学生，现申请<strong>北京师范大学历史学类（历史学／考古学）</strong>。受家中姑丈研习历史的影响，我自小养成「凡事追溯来历、理解前因后果」的习惯，并于高二历史科取得全级前五，由此确立研习历史的志向。</p>
+            <h3 style="color:var(--gold-light);margin-top:22px;">为何立志研习历史 <small style="font-size:0.75rem;opacity:0.55;">Motivation</small></h3>
+            <p>我习惯在做任何一件事、去任何一个地方之前，先了解它背后的来历与脉络——这正是我立志研习历史的动机。从澳门老街的商铺招牌到一场赛事的组织流程，我都希望追问「它从何而来、为何如此」。历史于我，不是死记的年代，而是一套追根溯源、理解世事的思维方法。</p>
+            <h3 style="color:var(--gold-light);margin-top:22px;">为何选择北京师范大学 <small style="font-size:0.75rem;opacity:0.55;">Why BNU</small></h3>
+            <p>北师大毕业的黄文秀女士扎根基层、奉献群众的事迹深深触动了我，让我看到这所大学「学为人师、行为世范」的精神底色，也让我立志报考北师大，希望在这片史学重镇接受系统而扎实的史学训练。</p>
+            <h3 style="color:var(--gold-light);margin-top:22px;">史学兴趣与田野实践 <small style="font-size:0.75rem;opacity:0.55;">Historical Approach</small></h3>
+            <p>我专注澳门地方史、岭南区域史与中西文化交流史，习于史料辨析、文献整理与田野调查，并以「旧径寻商踪」田野考察影片为代表——沿内港码头、大码头街、福隆新街等八处景点，从实物遗迹与地方文献重构昔日商人的一日流程，实践「由史料出发、以实地印证」的研究方法。</p>
+            <h3 style="color:var(--gold-light);margin-top:22px;">理科转文科的思维互补 <small style="font-size:0.75rem;opacity:0.55;">Interdisciplinary View</small></h3>
+            <p>中学修读理科，训练出重视证据与逻辑推演的思维，这与史学「论从史出」的原则相通；我也以量化与可视化方法整理史料，让数字人文成为研究地方史的辅助工具。</p>
+            <h3 style="color:var(--gold-light);margin-top:22px;">多元经历与个人素养 <small style="font-size:0.75rem;opacity:0.55;">Experiences</small></h3>
+            <p>我以排球技术官员身份参与第十五届全运会澳门赛区，并担任中国澳门排球总会室内排球裁判；曾获第十六届澳门青少年外交知识竞赛一等奖、全校文史地常识问答比赛冠军及季军，也参与南光联发行「志愿成真」客服实习，以及广州西关、云南、青岛海洋大学等交流团。这些经历让我以更开阔的视野理解粤港澳大湾区与中华文化。</p>
+            <div class="data-highlight-scroll">
+              <div class="data-highlight-card">
+                <div class="dh-number">8</div>
+                <div class="dh-label">考察景点 Sites</div>
+              </div>
+              <div class="data-highlight-card">
+                <div class="dh-number">4</div>
+                <div class="dh-label">文化交流团 Tours</div>
+              </div>
+              <div class="data-highlight-card">
+                <div class="dh-number">3+</div>
+                <div class="dh-label">研究专案 Projects</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="content-wrapper">
+      <div class="content-section" id="journey-section">
+        <span class="section-subtitle-en">Academic & Professional Timeline</span>
+        <h2 class="section-title">成长历程与工作经历</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div><span class="date-tag">高二学年</span>
+              <h3>历史科全级排名前五 <small style="font-size:0.75rem;opacity:0.5;">Top 5 in History</small></h3>
+              <p>在历史科取得全级排名前五，掌握史料辨析、因果推演与多元视角的史学思辨方法，奠定报读历史学类的学术基础。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-thumb-wrapper"><img src="https://i.postimg.cc/bwQvp4fZ/c2946d570a8b9b5bbc208a5c434f0742.jpg" class="timeline-thumb" alt="历史文化小组" data-lightbox-src="https://i.postimg.cc/bwQvp4fZ/c2946d570a8b9b5bbc208a5c434f0742.jpg"></div>
+            <div><span class="date-tag">2023 – 2025</span>
+              <h3>历史文化小组 <small style="font-size:0.75rem;opacity:0.5;">History & Culture Research Group</small></h3>
+              <p>加入历史文化小组，系统研习澳门地缘历史发展与中西文化交融脉络，接受史学方法与文献批评训练。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-thumb-wrapper"><img src="https://i.postimg.cc/q7RtG05h/Image-20260624224704-192-47.jpg" class="timeline-thumb" alt="排球训练" data-lightbox-src="https://i.postimg.cc/q7RtG05h/Image-20260624224704-192-47.jpg"></div>
+            <div><span class="date-tag">2020 年起</span>
+              <h3>排球训练 <small style="font-size:0.75rem;opacity:0.5;">Volleyball Training Begins</small></h3>
+              <p>正式加入排球队，开启长期团队竞技生涯，培养坚韧意志与团队协作精神。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-thumb-wrapper"><img src="https://i.postimg.cc/ydPT3fqF/71b1652cff320fdb104659514dc0858b.jpg" class="timeline-thumb" alt="世界排球联赛" data-lightbox-src="https://i.postimg.cc/ydPT3fqF/71b1652cff320fdb104659514dc0858b.jpg"></div>
+            <div><span class="date-tag">2024 年 6 月</span>
+              <h3>世界排球联赛（VNL）澳门站 <small style="font-size:0.75rem;opacity:0.5;">FIVB Volleyball Nations League</small></h3>
+              <p><strong>大会场地组官方工作人员。</strong>协助国际级体育盛事的场地运行保障、外籍队伍联络以及突发行政事务的应变处理，展现跨文化沟通与临场应变能力。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-thumb-wrapper"><img src="https://i.postimg.cc/1tCqZbhc/37c4b6b5e805efa20b4eaa9189e2dcbf.jpg" class="timeline-thumb" alt="澳门代表队" data-lightbox-src="https://i.postimg.cc/1tCqZbhc/37c4b6b5e805efa20b4eaa9189e2dcbf.jpg"></div>
+            <div><span class="date-tag">2024 年 8 月</span>
+              <h3>澳门排球代表二队 <small style="font-size:0.75rem;opacity:0.5;">Macau Volleyball Representative Team</small></h3>
+              <p>获选代表澳门特别行政区出战全国青少年阳光体育大会，与全国各省优秀青年运动员同场竞技。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-thumb-wrapper"><img src="https://i.postimg.cc/hjzNPTJM/Image-20260626215139-234-47.jpg" class="timeline-thumb" alt="全国运动会" data-lightbox-src="https://i.postimg.cc/hjzNPTJM/Image-20260626215139-234-47.jpg"></div>
+            <div><span class="date-tag">2025 年 11 月</span>
+              <h3>第十五届全国运动会（澳门赛区） <small style="font-size:0.75rem;opacity:0.5;">National Games · Macau</small></h3>
+              <p><strong>排球项目技术官员。</strong>负责高规格国家级赛事现场的技术数据实时登录、裁判组后勤调度与竞赛流程控管，并由此重新审视粤港澳三地作为岭南文化共同体的历史联系。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section" id="skills-section">
+        <span class="section-subtitle-en">Competency Profile</span>
+        <h2 class="section-title">能力概览</h2>
+        <div class="skills-grid" id="skills-grid">
+          <div class="skill-card reveal-on-scroll">
+            <h3>语言能力 Languages</h3>
+            <div class="skill-item">
+              <div class="skill-row"><span>广东话 Cantonese</span><span>母语 Native</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="100"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>普通话 Mandarin</span><span>优良 Distinction</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="92"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>英语 English</span><span>中级 Intermediate</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="72"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>葡萄牙语 Portuguese</span><span>基础 Basic</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="35"></div>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card reveal-on-scroll delay-1">
+            <h3>史学研究能力 Historical Research</h3>
+            <div class="skill-item">
+              <div class="skill-row"><span>史料考证 Source Criticism</span><span>进阶 Advanced</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="85"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>文献整理 Archival Work</span><span>熟练 Proficient</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="88"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>田野调查 Fieldwork</span><span>熟练 Proficient</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="82"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>历史叙事与书写 Historical Writing</span><span>熟练 Proficient</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="80"></div>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card reveal-on-scroll delay-2">
+            <h3>数位人文工具 Digital Humanities</h3>
+            <div class="skill-item">
+              <div class="skill-row"><span>资料整理与分析（Excel）</span><span>专家 Expert</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="90"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>新媒体与影片制作</span><span>熟练 Proficient</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="82"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>资料可视化 Data Viz</span><span>熟练 Proficient</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="75"></div>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card reveal-on-scroll delay-3">
+            <h3>跨学科思维 Interdisciplinary</h3>
+            <div class="skill-item">
+              <div class="skill-row"><span>理科逻辑推理</span><span>进阶 Advanced</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="85"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>量化与数据思维</span><span>熟练 Proficient</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="78"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-row"><span>批判性思维 Critical Thinking</span><span>熟练 Proficient</span></div>
+              <div class="skill-bar-bg">
+                <div class="skill-fill" data-width="80"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section" id="research-section">
+        <span class="section-subtitle-en">Academic Research & Field Projects</span>
+        <h2 class="section-title">学术研究与田野专案</h2>
+        <div class="glass-card reveal-on-scroll">
+          <h3>历史考察影片：「旧径寻商踪」 <small style="font-size:0.8rem;opacity:0.55;">Historic Route Documentary</small></h3>
+          <span class="date-tag">田野调查 · 澳门地方史</span>
+          <p><strong>创意名称由来：</strong>「旧径」直指百年商贸古道，点明历史底蕴；「寻商踪」带出探寻昔日通商足迹之意，结合路线历史与游览乐趣。</p>
+          <p><strong>研究方法与内容：</strong>面向历史爱好者，透过内港码头、大码头街、福隆新街等八个景点，以实地考察与地方文献重现昔日商人一日流程，展现田野调查、史料整合与公众史学叙事能力。</p>
+          <p><strong>升学关联：</strong>对应历史学、考古学及文化遗产管理等方向，证明具备实地考察、文献整合与将学术知识转化为通俗导赏的综合人文素养。</p>
+          <img src="https://img.youtube.com/vi/Q0DbGHK5Jgo/hqdefault.jpg" alt="旧径寻商踪 影片预览" class="video-preview" data-lightbox-src="https://img.youtube.com/vi/Q0DbGHK5Jgo/hqdefault.jpg" loading="lazy">
+          <a href="https://youtu.be/Q0DbGHK5Jgo?si=IsPCB0ijz1b0WmCZ" target="_blank" class="research-link-btn">观看历史影片 Watch Video</a>
+        </div>
+        <div class="glass-card reveal-on-scroll delay-1">
+          <h3>科学知识的多媒体叙事 <small style="font-size:0.8rem;opacity:0.55;">Science Communication via Multimedia</small></h3>
+          <span class="date-tag">跨学科知识传播专案</span>
+          <p><strong>内容概述：</strong>以影片形式深入浅出介绍有机化学基础概念，涵盖官能基、分子结构及常见反应，训练将复杂理论转化为视觉化叙事的能力。</p>
+          <p><strong>升学关联：</strong>展示将知识转化为多媒体叙事的能力，与历史学的公众史学、知识传播相通，同时体现理科背景带来的跨学科视野。</p>
+          <img src="https://img.youtube.com/vi/1__Z13QAqtg/hqdefault.jpg" alt="有机化学 影片预览" class="video-preview" data-lightbox-src="https://img.youtube.com/vi/1__Z13QAqtg/hqdefault.jpg" loading="lazy">
+          <a href="https://youtu.be/1__Z13QAqtg" target="_blank" class="research-link-btn">观看影片 Watch Video</a>
+        </div>
+        <div class="glass-card reveal-on-scroll delay-2">
+          <h3>囊肿性纤维化（Cystic Fibrosis）研究网站 <small style="font-size:0.8rem;opacity:0.55;">Genetics Research Web Report</small></h3>
+          <span class="date-tag">生物科专题研究 · 文献综述</span>
+          <p><strong>内容概述：</strong>建立专题研究网站，系统探讨囊肿性纤维化的致病基因、CFTR蛋白功能、临床表现及治疗策略，透过文献综述、图表与互动元素呈现严谨的科学内容。</p>
+          <p style="opacity:0.7;font-size:0.9rem;">A research website systematically exploring the CFTR gene, protein function and therapies for cystic fibrosis, demonstrating advanced literature review and digital communication skills.</p>
+          <p><strong>升学关联：</strong>展示文献综述、资料整合与数位传播的独立研究素养，体现将科学方法迁移至人文研究（如历史数位人文）的潜力。</p>
+          <a href="https://bio.chonin.top" target="_blank" class="research-link-btn">浏览研究网站 Visit Website</a>
+        </div>
+      </div>
+
+      <div class="content-section" id="awards-section">
+        <span class="section-subtitle-en">Awards, Certificates & Credentials</span>
+        <h2 class="section-title">奖项、证书与证明文件</h2>
+        <h3 style="color:var(--gold-light);font-size:1rem;font-weight:600;letter-spacing:1px;margin:4px 0 14px;">学科竞赛奖项</h3>
+        <div class="award-list">
+          <div class="award-item reveal-on-scroll" data-lightbox-src="assets/certs/diplomacy.png"><img src="assets/certs/diplomacy.png" class="award-thumb" alt="外交知识竞赛一等奖">
+            <div class="award-info">
+              <h4>第十六届澳门青少年外交知识竞赛</h4>
+              <p class="award-rank">一等奖 First Prize</p>
+              <p class="award-date">2025 年 12 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：地缘政治与近现代中国外交史视野</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-1" data-lightbox-src="assets/certs/wenshidi-gold.png"><img src="assets/certs/wenshidi-gold.png" class="award-thumb" alt="文史地常识问答比赛冠军">
+            <div class="award-info">
+              <h4>澳门大学中国历史文化中心 文史地常识问答比赛</h4>
+              <p class="award-rank">冠军 Champion</p>
+              <p class="award-date">2024 年 12 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：史地人文素养的直接体现</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-2" data-lightbox-src="assets/certs/wenshidi-bronze.png"><img src="assets/certs/wenshidi-bronze.png" class="award-thumb" alt="文史地常识问答比赛季军">
+            <div class="award-info">
+              <h4>澳门大学中国历史文化中心 文史地常识问答比赛</h4>
+              <p class="award-rank">季军 Second Runner-up</p>
+              <p class="award-date">2025 年 12 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：持续研习文史地的印证</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-3" data-lightbox-src="https://i.postimg.cc/9fmcVMBP/c49eec82a7efbdb6809984a0b87c5937.jpg"><img src="https://i.postimg.cc/9fmcVMBP/c49eec82a7efbdb6809984a0b87c5937.jpg" class="award-thumb" alt="GAPSK">
+            <div class="award-info">
+              <h4>GAPSK 中小学普通话水平考试（中学组）</h4>
+              <p class="award-rank">优良级 Grade B</p>
+              <p class="award-date">2024 年 6 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：内地升学与史料研读所需中文能力</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-4" data-lightbox-src="https://i.postimg.cc/qMFm4ZXm/dc16841ad63f82253a787353edc1b70d.jpg"><img src="https://i.postimg.cc/qMFm4ZXm/dc16841ad63f82253a787353edc1b70d.jpg" class="award-thumb" alt="学界排球">
+            <div class="award-info">
+              <h4>澳门 DSEDJ 学界排球比赛</h4>
+              <p class="award-rank">亚军 Second Place</p>
+              <p class="award-date">2024 / 2025</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：长期纪律、毅力与团队协作</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-1" data-lightbox-src="https://i.postimg.cc/jCYr1d5L/4eab5bbfb25dffebc03c7c8405a0a72d.jpg"><img src="https://i.postimg.cc/jCYr1d5L/4eab5bbfb25dffebc03c7c8405a0a72d.jpg" class="award-thumb" alt="海洋研学">
+            <div class="award-info">
+              <h4>中国海洋大学「深蓝之旅」海洋生命研学</h4>
+              <p class="award-rank">海洋生物学学术研学结业证书</p>
+              <p class="award-date">2025 年 3 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：跨学科实证与科学思维</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-2" data-lightbox-src="https://i.postimg.cc/Dy3ZH7RC/5098a46f85753499565eca54adfef49f.jpg"><img src="https://i.postimg.cc/Dy3ZH7RC/5098a46f85753499565eca54adfef49f.jpg" class="award-thumb" alt="Excel Expert">
+            <div class="award-info">
+              <h4>Microsoft Office Specialist: Excel Expert (Microsoft 365 Apps)</h4>
+              <p class="award-rank">微软 Excel 专家级国际认证</p>
+              <p class="award-date">2026 年 6 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：数字人文与史料整理工具</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-3" data-lightbox-src="https://i.postimg.cc/vZHQwTh5/012f944430209d27a45c44b770778a57.jpg"><img src="https://i.postimg.cc/vZHQwTh5/012f944430209d27a45c44b770778a57.jpg" class="award-thumb" alt="Excel 2019">
+            <div class="award-info">
+              <h4>Microsoft Office Specialist: Excel 2019</h4>
+              <p class="award-rank">微软 Excel 专业级国际认证</p>
+              <p class="award-date">2025 年 12 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：资料整理与量化基础</p>
+            </div>
+          </div>
+        </div>
+        <h3 style="color:var(--gold-light);font-size:1rem;font-weight:600;letter-spacing:1px;margin:28px 0 14px;">证书与证明文件</h3>
+        <div class="award-list">
+          <div class="award-item reveal-on-scroll" data-lightbox-src="assets/certs/ielts.png"><img src="assets/certs/ielts.png" class="award-thumb" alt="IELTS 雅思成绩">
+            <div class="award-info">
+              <h4>IELTS 学术类（雅思）国际英语测试</h4>
+              <p class="award-rank">总分 6.0 · Listening 7.0 / Reading 5.5 / Writing 5.5 / Speaking 6.5</p>
+              <p class="award-date">2026 年 10 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：学术英语与跨文化阅读能力</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-1" data-lightbox-src="assets/certs/referee-mid.png"><img src="assets/certs/referee-mid.png" class="award-thumb" alt="中级裁判证书">
+            <div class="award-info">
+              <h4>中国澳门排球总会 中级裁判证书</h4>
+              <p class="award-rank">排球规则课程暨中级裁判培训 · 成绩及格</p>
+              <p class="award-date">2024 年 9 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：规则研读、判断与责任意识</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-2" data-lightbox-src="assets/certs/referee-junior.png"><img src="assets/certs/referee-junior.png" class="award-thumb" alt="初级裁判证书">
+            <div class="award-info">
+              <h4>中国澳门排球总会 初级裁判证书</h4>
+              <p class="award-rank">排球规则课程暨初级裁判培训 · 成绩及格</p>
+              <p class="award-date">2022 年 9 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：自 2022 年起的长期投入</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-3" data-lightbox-src="assets/certs/vnl.png"><img src="assets/certs/vnl.png" class="award-thumb" alt="世界女排联赛澳门2024">
+            <div class="award-info">
+              <h4>世界女排联赛澳门 2024 赛事工作</h4>
+              <p class="award-rank">大会场地组官方工作人员 · 豁免上课证明</p>
+              <p class="award-date">2024 年 5–6 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：国际赛事服务与跨文化沟通</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-4" data-lightbox-src="assets/certs/national-games.png"><img src="assets/certs/national-games.png" class="award-thumb" alt="第十五届全运会技术官员">
+            <div class="award-info">
+              <h4>第十五届全国运动会 排球项目技术官员</h4>
+              <p class="award-rank">女子成年组技术官员 · 豁免上课证明</p>
+              <p class="award-date">2025 年 11 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：粤港澳共同承办全国性赛事的亲历</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-1" data-lightbox-src="assets/certs/arbitration.png"><img src="assets/certs/arbitration.png" class="award-thumb" alt="全运会运行测试仲裁">
+            <div class="award-info">
+              <h4>第十五届全国运动会 排球运行测试仲裁人员</h4>
+              <p class="award-rank">女子成年组运行测试 · 培训及仲裁工作</p>
+              <p class="award-date">2025 年 5 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：赛事组织与程序意识</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-2" data-lightbox-src="assets/certs/recommendation.png"><img src="assets/certs/recommendation.png" class="award-thumb" alt="排球总会推荐信">
+            <div class="award-info">
+              <h4>中国澳门排球总会 推荐信</h4>
+              <p class="award-rank">室内排球裁判 · 全运会技术官员（辅助记录员）</p>
+              <p class="award-date">2026 年 9 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：长期实务表现的第三方背书</p>
+            </div>
+          </div>
+          <div class="award-item reveal-on-scroll delay-3" data-lightbox-src="assets/certs/internship.png"><img src="assets/certs/internship.png" class="award-thumb" alt="志愿成真职前实践">
+            <div class="award-info">
+              <h4>教育及青年发展局「志愿成真」职前实践</h4>
+              <p class="award-rank">南光联发行有限公司 · 客服专员 · 三星期无酬实践</p>
+              <p class="award-date">2026 年 7–8 月</p>
+              <p style="font-size:0.74rem;color:var(--gold-pale);opacity:0.85;margin-top:3px;">关联：社会观察与口述史素材积累</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section" id="exchange-section">
+        <span class="section-subtitle-en">Cultural Exchange & Field Studies</span>
+        <h2 class="section-title">交流学习与田野反思</h2>
+        <div class="glass-card reveal-on-scroll">
+          <h3>排球成长历程 <small style="font-size:0.8rem;opacity:0.55;">Volleyball Journey</small></h3>
+          <span class="date-tag">2020 – 现在</span>
+          <p>从少年训练到入选澳门代表二队，累积多年团队竞赛经验，磨炼毅力与抗压力。曾参与全运会及世界排球联赛等国际级赛事工作。</p>
+          <div class="photo-grid auto-scroll">
+            <div class="photo-track">
+              <div class="photo-item"><img src="https://i.postimg.cc/fb8YRxw8/Image-20260626193112-227-47.jpg" alt="排球" data-lightbox-src="https://i.postimg.cc/fb8YRxw8/Image-20260626193112-227-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/hG2Vt9S6/Image-20260626193113-228-47.jpg" alt="排球" data-lightbox-src="https://i.postimg.cc/hG2Vt9S6/Image-20260626193113-228-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/rmzx0Kmf/Image-20260626193113-229-47.jpg" alt="排球" data-lightbox-src="https://i.postimg.cc/rmzx0Kmf/Image-20260626193113-229-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/vBDfgcB3/Image-20260626193114-230-47.jpg" alt="排球" data-lightbox-src="https://i.postimg.cc/vBDfgcB3/Image-20260626193114-230-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/fb8YRxw8/Image-20260626193112-227-47.jpg" alt="排球" data-lightbox-src="https://i.postimg.cc/fb8YRxw8/Image-20260626193112-227-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/hG2Vt9S6/Image-20260626193113-228-47.jpg" alt="排球" data-lightbox-src="https://i.postimg.cc/hG2Vt9S6/Image-20260626193113-228-47.jpg"></div>
+            </div>
+          </div>
+          <div class="exchange-reflection">
+            <h4>学术启示与个人成长</h4>
+            <p>长年排球训练磨炼出毅力与逻辑协调思维。比赛如同学术专案，需要拆解战术、沟通队友、快速调整心态——这套思维模式可以平移到大学课业与研究之中。透过团队协作，我更深刻体会信任与责任的重要性，学会在压力下保持冷静。</p>
+          </div>
+        </div>
+        <div class="glass-card reveal-on-scroll delay-1">
+          <h3>广州西关文化交流 <small style="font-size:0.8rem;opacity:0.55;">Guangzhou Lingnan Cultural Tour</small></h3>
+          <span class="date-tag">2024 年 12 月</span>
+          <p>走进广州西关历史街区、革命史迹，沉浸式学习岭南传统文化、广东民俗与近代中国发展历史。</p>
+          <div class="photo-grid">
+            <div class="photo-item"><img src="https://i.postimg.cc/v8zsG9BB/Image-20260624224859-200-47.jpg" alt="广州" data-lightbox-src="https://i.postimg.cc/v8zsG9BB/Image-20260624224859-200-47.jpg"></div>
+            <div class="photo-item"><img src="https://i.postimg.cc/2jwDCv6W/Image-20260624224907-201-47.jpg" alt="广州" data-lightbox-src="https://i.postimg.cc/2jwDCv6W/Image-20260624224907-201-47.jpg"></div>
+          </div>
+          <div class="exchange-reflection">
+            <h4>文化体验与人文素养</h4>
+            <p>本次交流让我深入认识岭南文化底蕴，透过实地走访历史展馆、古街巷，立体理解广东地域文化与近代历史脉络，强化文史思辨能力，为未来人文学科的跨学科学习奠定基础。</p>
+          </div>
+        </div>
+        <div class="glass-card reveal-on-scroll delay-2">
+          <h3>云南文化交流团 <small style="font-size:0.8rem;opacity:0.55;">Yunnan Cultural Exchange</small></h3>
+          <span class="date-tag">2025 年 11 月</span>
+          <p>深入云南丽江、玉湖村等地，实地考察少数民族文化传承，沉浸式体验中华传统文化与在地历史脉络。</p>
+          <div class="photo-grid auto-scroll">
+            <div class="photo-track">
+              <div class="photo-item"><img src="https://i.postimg.cc/qMqSJL4w/Image-20260626192655-220-47.jpg" alt="云南" data-lightbox-src="https://i.postimg.cc/qMqSJL4w/Image-20260626192655-220-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/15X2mHsv/Image-20260626192656-221-47.jpg" alt="云南" data-lightbox-src="https://i.postimg.cc/15X2mHsv/Image-20260626192656-221-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/RVhySR4P/Image-20260626192657-222-47.jpg" alt="云南" data-lightbox-src="https://i.postimg.cc/RVhySR4P/Image-20260626192657-222-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/KvjwGNxp/Image-20260626192658-223-47.jpg" alt="云南" data-lightbox-src="https://i.postimg.cc/KvjwGNxp/Image-20260626192658-223-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/qMqSJL4w/Image-20260626192655-220-47.jpg" alt="云南" data-lightbox-src="https://i.postimg.cc/qMqSJL4w/Image-20260626192655-220-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/15X2mHsv/Image-20260626192656-221-47.jpg" alt="云南" data-lightbox-src="https://i.postimg.cc/15X2mHsv/Image-20260626192656-221-47.jpg"></div>
+            </div>
+          </div>
+          <div class="exchange-reflection">
+            <h4>多元文化理解与自我反思</h4>
+            <p>云南之行让我亲身触及中华文化的多元面貌，从纳西族东巴文化到丽江古城的建筑哲学，理解文化传承是活在当下的社会实践，提升跨文化理解力，反思全球化背景下保育少数民族文化的重要性。</p>
+          </div>
+        </div>
+        <div class="glass-card reveal-on-scroll delay-3">
+          <h3>青岛海洋科学研学之旅 <small style="font-size:0.8rem;opacity:0.55;">Qingdao Ocean Science Study Tour</small></h3>
+          <span class="date-tag">2025 年 3 月</span>
+          <p>走进中国海洋大学，参与海洋生命科学研究课题，实地考察海事设施，系统学习海洋生物与生态知识。</p>
+          <div class="photo-grid auto-scroll">
+            <div class="photo-track">
+              <div class="photo-item"><img src="https://i.postimg.cc/66mz0Nxh/Image-20260626192735-224-47.jpg" alt="青岛" data-lightbox-src="https://i.postimg.cc/66mz0Nxh/Image-20260626192735-224-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/MZFtD8J9/Image-20260626192735-225-47.jpg" alt="青岛" data-lightbox-src="https://i.postimg.cc/MZFtD8J9/Image-20260626192735-225-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/59Rp3MWp/Image-20260626192736-226-47.jpg" alt="青岛" data-lightbox-src="https://i.postimg.cc/59Rp3MWp/Image-20260626192736-226-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/66mz0Nxh/Image-20260626192735-224-47.jpg" alt="青岛" data-lightbox-src="https://i.postimg.cc/66mz0Nxh/Image-20260626192735-224-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/MZFtD8J9/Image-20260626192735-225-47.jpg" alt="青岛" data-lightbox-src="https://i.postimg.cc/MZFtD8J9/Image-20260626192735-225-47.jpg"></div>
+              <div class="photo-item"><img src="https://i.postimg.cc/59Rp3MWp/Image-20260626192736-226-47.jpg" alt="青岛" data-lightbox-src="https://i.postimg.cc/59Rp3MWp/Image-20260626192736-226-47.jpg"></div>
+            </div>
+          </div>
+          <div class="exchange-reflection">
+            <h4>科学启蒙与跨学科视野</h4>
+            <p>这次走进国家重点高校的研学经历，是学术路上的重要启蒙。在中国海洋大学的实验室与标本馆中，近距离接触前沿科研成果，强化科学思维与实证精神，也让我体会理科思维与人文研究可以相互补充。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lightbox-overlay" id="lightbox"><span class="lightbox-close-hint">点击任意处关闭 Click to close</span><img src="" alt="放大图片" id="lightbox-img"></div>
+  <footer>© 2026 钟柏轩 · 历史学类申请作品集 · History Programme Portfolio</footer>
+
+  <script>
+    (function() {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.getElementById('loading-screen').classList.add('hidden');
+        }, 2900);
+      });
+      const cursorGlow = document.getElementById('cursor-glow');
+      document.addEventListener('mousemove', (e) => {
+        cursorGlow.style.left = e.clientX + 'px';
+        cursorGlow.style.top = e.clientY + 'px';
+      });
+      document.addEventListener('mouseleave', () => {
+        cursorGlow.style.opacity = '0';
+      });
+      document.addEventListener('mouseenter', () => {
+        cursorGlow.style.opacity = '1';
+      });
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', () => {
+        const html = document.documentElement;
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        themeToggle.textContent = next === 'dark' ? '☾' : '☀';
+      });
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 50;
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById('three-bg').appendChild(renderer.domElement);
+      const particlesGeo = new THREE.BufferGeometry();
+      const count = 700;
+      const pos = new Float32Array(count * 3);
+      const col = new Float32Array(count * 3);
+      for (let i = 0; i < count * 3; i += 3) {
+        pos[i] = (Math.random() - 0.5) * 90;
+        pos[i + 1] = (Math.random() - 0.5) * 65;
+        pos[i + 2] = (Math.random() - 0.5) * 45;
+        col[i] = 0.65 + Math.random() * 0.35;
+        col[i + 1] = 0.5 + Math.random() * 0.3;
+        col[i + 2] = 0.18 + Math.random() * 0.22;
+      }
+      particlesGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      particlesGeo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      const pMat = new THREE.PointsMaterial({
+        size: 0.14,
+        vertexColors: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        transparent: true,
+        opacity: 0.65
+      });
+      const points = new THREE.Points(particlesGeo, pMat);
+      scene.add(points);
+      const lineGeo = new THREE.BufferGeometry();
+      const linePositions = [];
+      for (let i = 0; i < 40; i++) {
+        const t = i / 39;
+        linePositions.push((t - 0.5) * 75, Math.sin(t * 7) * 6 - 3, (Math.random() - 0.5) * 18);
+      }
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0xc8a850,
+        transparent: true,
+        opacity: 0.18,
+        blending: THREE.AdditiveBlending
+      });
+      const line = new THREE.Line(lineGeo, lineMat);
+      scene.add(line);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        points.rotation.y += 0.0005;
+        points.rotation.x += 0.00025;
+        line.rotation.y += 0.0008;
+        line.rotation.z += 0.0004;
+        renderer.render(scene, camera);
+      }
+      animate();
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+      const heroSection = document.getElementById('hero-section');
+      const homeAbout = document.getElementById('home-about');
+      const contentWrapper = document.getElementById('content-wrapper');
+      const navLinks = document.querySelectorAll('.global-nav a[data-view]');
+      const contentSections = document.querySelectorAll('.content-section');
+      const exploreBtn = document.getElementById('explore-btn');
+
+      function showView(viewName) {
+        if (viewName === 'home') {
+          heroSection.style.display = 'flex';
+          homeAbout.style.display = 'block';
+          contentWrapper.classList.remove('active');
+          contentWrapper.style.display = 'none';
+        } else {
+          heroSection.style.display = 'none';
+          homeAbout.style.display = 'none';
+          contentWrapper.style.display = 'block';
+          contentWrapper.classList.add('active');
+          contentSections.forEach(sec => sec.classList.remove('active'));
+          const target = document.getElementById(viewName + '-section');
+          if (target) target.classList.add('active');
+          if (viewName === 'journey') revealTimelineItems();
+          if (viewName === 'skills') animateSkillBars();
+          setTimeout(observeRevealElements, 200);
+        }
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('data-view') === viewName) link.classList.add('active');
+        });
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          showView(link.getAttribute('data-view'));
+        });
+      });
+      exploreBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showView('journey');
+      });
+      const scrollDownBtn = document.getElementById('scroll-down-btn');
+      scrollDownBtn.addEventListener('click', () => {
+        const aboutSection = document.getElementById('home-about');
+        aboutSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      });
+      const statNumbers = document.querySelectorAll('.stat-number');
+      const counterObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.getAttribute('data-target'));
+            const duration = 2000;
+            const start = performance.now();
+
+            function upd(now) {
+              const prog = Math.min((now - start) / duration, 1);
+              const eased = 1 - Math.pow(1 - prog, 3);
+              el.textContent = Math.round(target * eased) + (target >= 10 ? '+' : '');
+              if (prog < 1) requestAnimationFrame(upd);
+            }
+            requestAnimationFrame(upd);
+            counterObs.unobserve(el);
+          }
+        });
+      }, {
+        threshold: 0.6
+      });
+      statNumbers.forEach(el => counterObs.observe(el));
+
+      function revealTimelineItems() {
+        const items = document.querySelectorAll('#journey-section .timeline-item');
+        items.forEach((item, index) => {
+          item.classList.remove('revealed');
+          setTimeout(() => {
+            item.classList.add('revealed');
+          }, index * 130);
+        });
+      }
+
+      function animateSkillBars() {
+        const skillFills = document.querySelectorAll('#skills-section .skill-fill');
+        skillFills.forEach(fill => {
+          fill.style.width = '0';
+          fill.classList.remove('loaded');
+        });
+        const skillsGrid = document.getElementById('skills-grid');
+        if (!skillsGrid) return;
+        const obs = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            skillFills.forEach((fill, i) => {
+              setTimeout(() => {
+                fill.style.width = fill.getAttribute('data-width') + '%';
+                fill.classList.add('loaded');
+              }, i * 80);
+            });
+            obs.unobserve(skillsGrid);
+          }
+        }, {
+          threshold: 0.25
+        });
+        obs.observe(skillsGrid);
+      }
+
+      function observeRevealElements() {
+        const revealEls = document.querySelectorAll('.reveal-on-scroll:not(.revealed)');
+        const revealObs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              revealObs.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.15,
+          rootMargin: '0px 0px -30px 0px'
+        });
+        revealEls.forEach(el => revealObs.observe(el));
+      }
+      setTimeout(observeRevealElements, 400);
+      const globalNav = document.getElementById('global-nav');
+
+      function updateNavOnScroll() {
+        if (window.scrollY > 60) globalNav.classList.add('scrolled');
+        else globalNav.classList.remove('scrolled');
+      }
+      window.addEventListener('scroll', updateNavOnScroll, {
+        passive: true
+      });
+      const backToTopBtn = document.getElementById('back-to-top');
+
+      function toggleBackToTop() {
+        if (window.scrollY > 500) backToTopBtn.classList.add('visible');
+        else backToTopBtn.classList.remove('visible');
+      }
+      window.addEventListener('scroll', toggleBackToTop, {
+        passive: true
+      });
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-lightbox-src]');
+        if (trigger) {
+          e.preventDefault();
+          lightboxImg.src = trigger.getAttribute('data-lightbox-src');
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+      lightbox.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+      showView('home');
+      updateNavOnScroll();
+      toggleBackToTop();
+    })();
+  </script>
+</body>
+
+</html>
